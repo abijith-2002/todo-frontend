@@ -1,47 +1,55 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
 import './App.css';
+import TodoApp from './components/TodoApp';
+import useLocalStorage from './hooks/useLocalStorage';
 
 // PUBLIC_INTERFACE
 function App() {
-  const [theme, setTheme] = useState('light');
+  /**
+   * Root component that provides:
+   * - App-level theme toggle (persisted in localStorage)
+   * - A skip link for accessibility
+   * - Containers/styling for the Todo application
+   */
+  const [theme, setTheme] = useLocalStorage('todo.theme', 'light');
 
-  // Effect to apply theme to document element
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
+    if (theme && typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
   }, [theme]);
 
   // PUBLIC_INTERFACE
   const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <button 
-          className="theme-toggle" 
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        >
-          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-        </button>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          Current theme: <strong>{theme}</strong>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className="App" data-cy="app-root">
+      <a href="#main" className="skip-link">Skip to content</a>
+      <header className="app-header" role="banner">
+        <div className="container header-inner">
+          <h1 className="app-title" id="app-title">Todo</h1>
+          <button
+            className="btn btn-secondary theme-toggle"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+            data-cy="toggle-theme"
+          >
+            {theme === 'light' ? '🌙 Dark mode' : '☀️ Light mode'}
+          </button>
+        </div>
       </header>
+
+      <main id="main" className="container" role="main">
+        <TodoApp />
+      </main>
+
+      <footer className="app-footer" role="contentinfo">
+        <div className="container footer-inner">
+          <p className="muted">All data is stored locally in your browser for offline use.</p>
+        </div>
+      </footer>
     </div>
   );
 }

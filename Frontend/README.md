@@ -1,82 +1,52 @@
-# Lightweight React Template for KAVIA
+# Todo React SPA (Frontend)
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+A responsive, accessible, and offline-capable Todo application built with React.  
+All state is synchronized with the browser's Local Storage to support offline usage and quick performance.
 
 ## Features
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+- Add, edit (inline), delete tasks
+- Toggle tasks completed/active
+- Filter views: All, Active, Completed
+- Clear all completed tasks
+- Keyboard friendly:
+  - Enter to add a new task
+  - Escape to cancel input or editing
+  - Tab/Shift+Tab to navigate controls
+- Screen reader friendly:
+  - Live regions for action announcements and remaining count
+  - Proper roles and accessible names on interactive elements
+- Responsive UI that works on mobile and desktop
+- Local Storage sync for offline usage
+- Data attributes (`data-cy`) prepared for Cypress testing
 
 ## Getting Started
 
-In the project directory, you can run:
+In this directory:
 
-### `npm start`
+- `npm start` - run the app locally (http://localhost:3000)
+- `npm test`  - run unit tests
+- `npm run build` - create a production build
 
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Project Structure
 
-### `npm test`
+- `src/App.js` - App shell with theme toggle and layout
+- `src/components/*` - UI components and Todo logic
+- `src/hooks/useLocalStorage.js` - Local Storage synchronization hook
+- `src/utils/id.js` - Simple ID generator
+- `src/App.css`, `src/index.css` - Styles
 
-Launches the test runner in interactive watch mode.
+## Accessibility Notes
 
-### `npm run build`
+- The app uses ARIA live regions to announce updates
+- Filter buttons expose `aria-pressed` state
+- Buttons and inputs have explicit labels
+- Focus states are clearly visible
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Testing with Cypress
 
-## Customization
+The UI exposes stable `data-cy` selectors (e.g., `data-cy="input-new-todo"`, `data-cy="todo-item"`) to enable resilient Cypress tests.
 
-### Colors
+## Offline
 
-The main brand colors are defined as CSS variables in `src/App.css`:
-
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
-```
-
-### Components
-
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
-
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
-
-## Learn More
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+No backend is required; all data persists in `localStorage`. Clearing browser storage will reset the app state.
