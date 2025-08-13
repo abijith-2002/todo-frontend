@@ -1,28 +1,22 @@
 import React, { useEffect } from 'react';
 import './App.css';
 import TodoApp from './components/TodoApp';
-import useLocalStorage from './hooks/useLocalStorage';
 
 // PUBLIC_INTERFACE
 function App() {
   /**
    * Root component that provides:
-   * - App-level theme toggle (persisted in localStorage)
    * - A skip link for accessibility
    * - Containers/styling for the Todo application
+   * - Permanent dark theme styling
    */
-  const [theme, setTheme] = useLocalStorage('todo.theme', 'light');
 
   useEffect(() => {
-    if (theme && typeof document !== 'undefined') {
-      document.documentElement.setAttribute('data-theme', theme);
+    // Enforce dark theme permanently
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', 'dark');
     }
-  }, [theme]);
-
-  // PUBLIC_INTERFACE
-  const toggleTheme = () => {
-    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
-  };
+  }, []);
 
   return (
     <div className="App" data-cy="app-root">
@@ -30,14 +24,6 @@ function App() {
       <header className="app-header" role="banner">
         <div className="container header-inner">
           <h1 className="app-title" id="app-title">Todo</h1>
-          <button
-            className="btn btn-secondary theme-toggle"
-            onClick={toggleTheme}
-            aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-            data-cy="toggle-theme"
-          >
-            {theme === 'light' ? '🌙 Dark mode' : '☀️ Light mode'}
-          </button>
         </div>
       </header>
 
